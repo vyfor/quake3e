@@ -196,6 +196,21 @@ void GLimp_InitExtraExtensions( void )
 		glRefConfig.depthClamp = qtrue;
 
 		ri.Printf(PRINT_ALL, result[glRefConfig.depthClamp], extension);
+
+		if ( glRefConfig.depthClamp && qglEnable ) {
+			qglEnable( GL_DEPTH_CLAMP );
+			ri.Printf( PRINT_ALL, "...enabled GL_DEPTH_CLAMP at init\n" );
+
+			if ( GLimp_HaveExtension("GL_AMD_depth_clamp_separate") ) {
+				qglEnable( GL_DEPTH_CLAMP_NEAR_AMD );
+				qglEnable( GL_DEPTH_CLAMP_FAR_AMD );
+				ri.Printf( PRINT_ALL, "...enabled GL_AMD_depth_clamp_separate clamps\n" );
+			}
+			if ( GLimp_HaveExtension("GL_NV_depth_clamp") ) {
+				qglEnable( GL_DEPTH_CLAMP_NV );
+				ri.Printf( PRINT_ALL, "...enabled GL_NV_depth_clamp\n" );
+			}
+		}
 	}
 	else
 	{

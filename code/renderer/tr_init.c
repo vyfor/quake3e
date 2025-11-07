@@ -479,6 +479,27 @@ static void R_InitExtensions( void )
 			ri.Printf( PRINT_ALL, "...ignoring GL_EXT_compiled_vertex_array\n" );
 		}
 	}
+
+	// GL_ARB_depth_clamp
+	if ( R_HaveExtension( "GL_ARB_depth_clamp" ) || gl_version >= 32 ) {
+		ri.Printf( PRINT_ALL, "...using GL_ARB_depth_clamp\n" );
+		if ( qglEnable ) {
+			qglEnable( GL_DEPTH_CLAMP );
+			ri.Printf( PRINT_ALL, "...enabled GL_DEPTH_CLAMP at init\n" );
+
+			if ( R_HaveExtension( "GL_AMD_depth_clamp_separate" ) ) {
+				qglEnable( GL_DEPTH_CLAMP_NEAR_AMD );
+				qglEnable( GL_DEPTH_CLAMP_FAR_AMD );
+				ri.Printf( PRINT_ALL, "...enabled GL_AMD_depth_clamp_separate clamps\n" );
+			}
+			if ( R_HaveExtension( "GL_NV_depth_clamp" ) ) {
+				qglEnable( GL_DEPTH_CLAMP_NV );
+				ri.Printf( PRINT_ALL, "...enabled GL_NV_depth_clamp\n" );
+			}
+		}
+	} else {
+		ri.Printf( PRINT_ALL, "...GL_ARB_depth_clamp not found\n" );
+	}
 	else
 	{
 		ri.Printf( PRINT_ALL, "...GL_EXT_compiled_vertex_array not found\n" );
