@@ -1766,6 +1766,12 @@ static qboolean vk_create_device( VkPhysicalDevice physical_device, int device_i
 		Com_Memset( &features, 0, sizeof( features ) );
 		features.fillModeNonSolid = VK_TRUE;
 
+		/* enable depth clamp if supported by the physical device */
+		if ( device_features.depthClamp ) {
+			features.depthClamp = VK_TRUE;
+			vk.depthClamp = qtrue;
+		}
+
 #ifdef _DEBUG
 		if ( device_features.shaderInt64 ) {
 			features.shaderInt64 = VK_TRUE;
@@ -5310,7 +5316,7 @@ void vk_create_post_process_pipeline( int program_index, uint32_t width, uint32_
 	rasterization_state.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
 	rasterization_state.pNext = NULL;
 	rasterization_state.flags = 0;
-	rasterization_state.depthClampEnable = VK_FALSE;
+	rasterization_state.depthClampEnable = vk.depthClamp ? VK_TRUE : VK_FALSE;
 	rasterization_state.rasterizerDiscardEnable = VK_FALSE;
 	rasterization_state.polygonMode = VK_POLYGON_MODE_FILL;
 	//rasterization_state.cullMode = VK_CULL_MODE_BACK_BIT; // VK_CULL_MODE_NONE;
@@ -5499,7 +5505,7 @@ void vk_create_blur_pipeline( uint32_t index, uint32_t width, uint32_t height, q
 	rasterization_state.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
 	rasterization_state.pNext = NULL;
 	rasterization_state.flags = 0;
-	rasterization_state.depthClampEnable = VK_FALSE;
+	rasterization_state.depthClampEnable = vk.depthClamp ? VK_TRUE : VK_FALSE;
 	rasterization_state.rasterizerDiscardEnable = VK_FALSE;
 	rasterization_state.polygonMode = VK_POLYGON_MODE_FILL;
 	//rasterization_state.cullMode = VK_CULL_MODE_BACK_BIT; // VK_CULL_MODE_NONE;
@@ -6305,7 +6311,7 @@ VkPipeline create_pipeline( const Vk_Pipeline_Def *def, renderPass_t renderPassI
 	rasterization_state.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
 	rasterization_state.pNext = NULL;
 	rasterization_state.flags = 0;
-	rasterization_state.depthClampEnable = VK_FALSE;
+	rasterization_state.depthClampEnable = vk.depthClamp ? VK_TRUE : VK_FALSE;
 	rasterization_state.rasterizerDiscardEnable = VK_FALSE;
 	if ( def->shader_type == TYPE_DOT ) {
 		rasterization_state.polygonMode = VK_POLYGON_MODE_POINT;
