@@ -1252,6 +1252,10 @@ static const void *RB_DrawSurfs( const void *data ) {
 	// clear the z buffer, set the modelview, etc
 	RB_BeginDrawingView();
 
+	if ( gl_version >= 32 || ( glConfig.extensions_string && strstr( glConfig.extensions_string, "GL_ARB_depth_clamp" ) ) ) {
+		qglEnable( GL_DEPTH_CLAMP );
+	}
+
 	RB_RenderDrawSurfList( cmd->drawSurfs, cmd->numDrawSurfs );
 
 #ifdef USE_VBO

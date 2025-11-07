@@ -899,9 +899,9 @@ static const void	*RB_DrawSurfs( const void *data ) {
 	// clear the z buffer, set the modelview, etc
 	RB_BeginDrawingView ();
 
-	if (glRefConfig.framebufferObject && (backEnd.viewParms.flags & VPF_DEPTHCLAMP) && glRefConfig.depthClamp)
+	if ( glRefConfig.depthClamp )
 	{
-		qglEnable(GL_DEPTH_CLAMP);
+		qglEnable( GL_DEPTH_CLAMP );
 	}
 
 	if (glRefConfig.framebufferObject && !(backEnd.refdef.rdflags & RDF_NOWORLDMODEL) && (r_depthPrepass->integer || isShadowView))
@@ -1124,11 +1124,6 @@ static const void	*RB_DrawSurfs( const void *data ) {
 		// reset viewport and scissor
 		FBO_Bind(oldFbo);
 		SetViewportAndScissor();
-	}
-
-	if (glRefConfig.framebufferObject && (backEnd.viewParms.flags & VPF_DEPTHCLAMP) && glRefConfig.depthClamp)
-	{
-		qglDisable(GL_DEPTH_CLAMP);
 	}
 
 	if (!isShadowView)

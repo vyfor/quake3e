@@ -184,6 +184,7 @@ typedef struct {
 	int abs_light;
 	int allow_discard;
 	int acff; // none, rgb, rgba, alpha
+	qboolean depth_clamp;
 	struct {
 		byte rgb;
 		byte alpha;
